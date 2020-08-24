@@ -27,9 +27,9 @@ authenticate(username = uid, password = pwd)
 res_exp = createExperiment(list("name" = "PICI_0033_Penn"))
 exp_id = res_exp$`_id`
 
-# on restart, retrieve existing experiment
-idx = which(getExperiments()$name == "PICI_0033_Penn")[1]
-exp_id = getExperiments()$`_id`[idx]
+# # on restart, retrieve existing experiment
+# idx = which(getExperiments()$name == "PICI_0033_Penn")[1]
+# exp_id = getExperiments()$`_id`[idx]
 
 # Where are the data
 data_base = "~/Data/Independent_Consulting/Penn/PICI/data/PICI_0033/"
@@ -49,14 +49,7 @@ for (fld in folders) {
   for (i in 1:length(files)) {
     fn = files[i]
     cat("\t", fn, "...")
-    # check that R can read this file
-    ff = suppressWarnings(read.FCS(fn))
-    if (is(ff) == "flowFrame") {
-      cat("reading file successful ... ")
-    } else {
-      cat("reading file NOT successful ... ")
-    }
-    res_file = uploadFcsFile(experimentId = exp_id, fcsFilePath = fn)
+    res_file = getErrorInfo(uploadFcsFile(experimentId = exp_id, fcsFilePath = fn))
     file_id = res_file$`_id`
 
     # annotate file with folder
